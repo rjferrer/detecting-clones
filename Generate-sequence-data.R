@@ -1,7 +1,6 @@
 rm(list = ls())
 
 library(data.table)
-library(stringr)
 
 #load SLIM file to R as data table; skip lines until "CHROM"
 #separator is tab
