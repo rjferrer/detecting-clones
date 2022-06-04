@@ -50,7 +50,7 @@ snpData <- cbind(slimdata[,1:4], splitAlt$ALT_1, splitAlt$ALT_2, splitData)
 colnames(snpData) <- c(colnames(slimdata[,1:4]), "ALT1", "ALT2", colnames(splitData))
 View(snpData)
 
-#[2] substitute 0,1 values with A,T --------------------------------------------
+#[2] substitute binary genotype with nucleotide base ---------------------------
 subData <- data.frame(
   apply(snpData, MARGIN = 1, function(x){
     x <- as.character(x) #converts splitdata to list with each column as list element
