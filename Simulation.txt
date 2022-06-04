@@ -1,0 +1,216 @@
+initialize() {
+	//setSeed();
+	initializeSLiMModelType("nonWF"); // nonWF simulation
+	initializeSLiMOptions(nucleotideBased = T);
+	initializeAncestralNucleotides(randomNucleotides(249950500));
+	
+	defineConstant("N", 3); // number of subpopulations
+	defineConstant("cR", 0.1); // cloning rate (as the ratio of clones present in a given generation)
+	
+	initializeMutationTypeNuc("m1", 0.0, "f", 0.0); // neutral mutation
+	m1.convertToSubstitution = T;
+	
+	initializeGenomicElementType("g1", m1, 1.0, mmJukesCantor(1e-7));
+	for (index in 0:4999)
+		initializeGenomicElement(g1, index*50000, index*50000 + 499);
+	
+	initializeRecombinationRate(1e-8);
+}
+
+reproduction(p1) {
+	clones = round(subpop.individualCount * cR); // define the number of clones per generation
+	nonClones = subpop.individualCount - clones; // define the number of non-clones
+	numClonesParent = round(clones/2); // define the number of parents for clones; 2 clones per parent exist per cycle
+	nonParent = clones - numClonesParent; // define the number of parents that will not birth offspring
+	
+	// select indices for the parents of the clones
+	A = subpop.sampleIndividuals(asInteger(numClonesParent));
+	A.tag = 0; // tag for parents that will give rise to clonal offspring
+	cloneParent = subpop.subsetIndividuals(tag = 0);
+	
+	// select indices for parents that will not reproduce
+	// note that the pool of these indices should not include the indices in cloneParent
+	notA = setSymmetricDifference(subpop.individuals, cloneParent);
+	B = sample(notA, asInteger(nonParent));
+	B.tag = 1; // tag for individuals that will not reproduce
+	noChild = subpop.subsetIndividuals(tag = 1);
+	
+	// define the indices of individuals of those that will cross
+	// note that the pool of these indices should not include all previously selected indices
+	notAB = setSymmetricDifference(subpop.individuals, c(cloneParent, noChild));
+	C = sample(notAB, asInteger(nonClones));
+	C.tag = 2; // tag for parents that will give rise to crossed offspring
+	crossParent = subpop.subsetIndividuals(tag = 2);
+	
+	// clonal reproduction
+	for (i in cloneParent) {
+		X = 0;
+		
+		cloneSample = cloneParent[X];
+		
+		subpop.addCloned(cloneSample);
+		subpop.addCloned(cloneSample);
+		
+		X = X + 1;
+		
+	}
+	
+	// 2 rounds of crossing reproduction
+	crossRandom = sample(crossParent, asInteger(size(crossParent)));
+	
+	for (i in seq(0, (asInteger(size(crossParent) - 1)))) {
+		subpop.addCrossed(crossRandom[i], sample(crossParent, 1));
+	}
+	
+	self.active = 0; // this makes the reproduction script only run once per generation
+}
+
+reproduction(p2) {
+	clones = round(subpop.individualCount * cR); // define the number of clones per generation
+	nonClones = subpop.individualCount - clones; // define the number of non-clones
+	numClonesParent = round(clones/2); // define the number of parents for clones; 2 clones per parent exist per cycle
+	nonParent = clones - numClonesParent; // define the number of parents that will not birth offspring
+	
+	// select indices for the parents of the clones
+	A = subpop.sampleIndividuals(asInteger(numClonesParent));
+	A.tag = 0; // tag for parents that will give rise to clonal offspring
+	cloneParent = subpop.subsetIndividuals(tag = 0);
+	
+	// select indices for parents that will not reproduce
+	// note that the pool of these indices should not include the indices in cloneParent
+	notA = setSymmetricDifference(subpop.individuals, cloneParent);
+	B = sample(notA, asInteger(nonParent));
+	B.tag = 1; // tag for individuals that will not reproduce
+	noChild = subpop.subsetIndividuals(tag = 1);
+	
+	// define the indices of individuals of those that will cross
+	// note that the pool of these indices should not include all previously selected indices
+	notAB = setSymmetricDifference(subpop.individuals, c(cloneParent, noChild));
+	C = sample(notAB, asInteger(nonClones));
+	C.tag = 2; // tag for parents that will give rise to crossed offspring
+	crossParent = subpop.subsetIndividuals(tag = 2);
+	
+	// clonal reproduction
+	for (i in cloneParent) {
+		X = 0;
+		
+		cloneSample = cloneParent[X];
+		
+		subpop.addCloned(cloneSample);
+		subpop.addCloned(cloneSample);
+		
+		X = X + 1;
+	}
+	
+	// 2 rounds of crossing reproduction
+	crossRandom = sample(crossParent, asInteger(size(crossParent)));
+	
+	for (i in seq(0, (asInteger(size(crossParent) - 1)))) {
+		subpop.addCrossed(crossRandom[i], sample(crossParent, 1));
+	}
+	
+	self.active = 0; // this makes the reproduction script only run once per generation
+}
+
+reproduction(p3) {
+	clones = round(subpop.individualCount * cR); // define the number of clones per generation
+	nonClones = subpop.individualCount - clones; // define the number of non-clones
+	numClonesParent = round(clones/2); // define the number of parents for clones; 2 clones per parent exist per cycle
+	nonParent = clones - numClonesParent; // define the number of parents that will not birth offspring
+	
+	// select indices for the parents of the clones
+	A = subpop.sampleIndividuals(asInteger(numClonesParent));
+	A.tag = 0; // tag for parents that will give rise to clonal offspring
+	cloneParent = subpop.subsetIndividuals(tag = 0);
+	
+	// select indices for parents that will not reproduce
+	// note that the pool of these indices should not include the indices in cloneParent
+	notA = setSymmetricDifference(subpop.individuals, cloneParent);
+	B = sample(notA, asInteger(nonParent));
+	B.tag = 1; // tag for individuals that will not reproduce
+	noChild = subpop.subsetIndividuals(tag = 1);
+	
+	// define the indices of individuals of those that will cross
+	// note that the pool of these indices should not include all previously selected indices
+	notAB = setSymmetricDifference(subpop.individuals, c(cloneParent, noChild));
+	C = sample(notAB, asInteger(nonClones));
+	C.tag = 2; // tag for parents that will give rise to crossed offspring
+	crossParent = subpop.subsetIndividuals(tag = 2);
+	
+	// clonal reproduction
+	for (i in cloneParent) {
+		X = 0;
+		
+		cloneSample = cloneParent[X];
+		
+		subpop.addCloned(cloneSample);
+		subpop.addCloned(cloneSample);
+		
+		X = X + 1;
+	}
+	
+	// 2 rounds of crossing reproduction
+	crossRandom = sample(crossParent, asInteger(size(crossParent)));
+	
+	for (i in seq(0, (asInteger(size(crossParent) - 1)))) {
+		subpop.addCrossed(crossRandom[i], sample(crossParent, 1));
+	}
+	
+	self.active = 0; // this makes the reproduction script only run once per generation
+}
+
+early() {
+	inds = sim.subpopulations.individuals;
+	inds[inds.age > 0].fitnessScaling = 0.0;
+}
+
+// create an initial population of 6000 individuals
+1 early() {
+	for (i in 1:N)
+		sim.addSubpop(i, (i == 1) ? 6000 else 0);
+}
+
+5000 late() {
+	p2.takeMigrants(
+		sample(p1.individuals, 4000)
+		);
+}
+
+5001:17499 late() {
+	migrants12 = p1.sampleIndividuals(15, migrant = F);
+	p2.takeMigrants(migrants12);
+	
+	migrants21 = p2.sampleIndividuals(15, migrant = F);
+	p1.takeMigrants(migrants21);
+}
+
+17500 late() {
+	p3.takeMigrants(
+		p2.sampleIndividuals(2000, migrant = F)
+		);
+}
+
+17501: late() {
+	premigrate1 = p1.sampleIndividuals(20, migrant = F);
+	migrate12 = sample(premigrate1, 10);
+	migrate13 = setSymmetricDifference(premigrate1, migrate12);
+	p2.takeMigrants(migrate12);
+	p3.takeMigrants(migrate13);
+	
+	premigrate2 = p2.sampleIndividuals(35, migrant = F);
+	migrate21 = sample(premigrate2, 10);
+	migrate23 = setSymmetricDifference(premigrate2, migrate21);
+	p1.takeMigrants(migrate21);
+	p3.takeMigrants(migrate23);
+	
+	premigrate3 = p3.sampleIndividuals(35, migrant = F);
+	migrate31 = sample(premigrate3, 10);
+	migrate32 = setSymmetricDifference(premigrate3, migrate31);
+	p1.takeMigrants(migrate31);
+	p2.takeMigrants(migrate32);
+}
+
+20000 late() {
+	//sim.simulationFinished();
+	sim.subpopulations.outputVCFSample(sampleSize = size(sim.subpopulations.individuals), filePath = "~/Desktop/VCFnew.txt");
+}
