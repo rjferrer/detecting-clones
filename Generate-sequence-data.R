@@ -22,7 +22,7 @@ popFunc <- function(subPop){
   count <- 1:2000
   set.seed(99)
   pick.dupePop <- sample(dupePop, size = 5, replace = FALSE)
-  pick.uniPop <- sample(count[!count %in% (c(dupePop,dupeInd))], size = 20, replace = FALSE)
+  pick.uniPop <- sample(count[!count %in% dupeInd], size = 20, replace = FALSE)
   seqPop <- as.data.frame(c(tempPop[pick.dupePop],tempPop[pick.dupePop],tempPop[pick.uniPop]))
   return(seqPop)
 }
