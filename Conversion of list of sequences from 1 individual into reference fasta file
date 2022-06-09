@@ -1,0 +1,12 @@
+library(data.table)
+
+dataIn <- fread("Reference-seqs")
+dim(dataIn)
+preFix <- rep(">", 4762)
+dataIn$V1 <- paste(preFix, dataIn$V1)
+head(dataIn[,1], 10)
+
+dataOut <- data.frame(data=c(t(dataIn)))
+View (dataOut)
+dim(dataOut)
+write.csv(dataOut, "reference.csv")
