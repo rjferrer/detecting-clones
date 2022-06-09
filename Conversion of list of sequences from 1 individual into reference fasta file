@@ -1,14 +1,8 @@
 library(data.table)
-
 dataIn <- fread("Reference-seqs")
-dim(dataIn)
-preFix <- rep(">", 4762)
-dataIn$V1 <- paste(preFix, dataIn$V1)
-head(dataIn[,1], 10)
-
+prefix <- rep(">", 4762)
+dataIn$V1 <- paste(prefix, dataIn$V1)
 dataOut <- data.frame(data=c(t(dataIn)))
-View (dataOut)
-dim(dataOut)
 write.csv(dataOut, "reference.csv")
 
 #reference.csv will have numbers in the first column. Delete the first column and save file as .fasta
