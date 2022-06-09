@@ -1,0 +1,10 @@
+#Indexing of reference genome
+bwa index <reference.fasta>
+
+#Generation of alignments
+bwa mem <reference.fasta> <fastqfile.fastq> > <newfilenameformapped.sam>
+
+#Generation of bam files
+samtools view -S -b <newfilenameformapped.sam> > <newfilenameformapped.bam> 
+samtools sort <newfilenameformapped.bam> –o <newfilenameformapped_sorted.bam> 
+samtools index <newfilenameformapped_sorted.bam> 
