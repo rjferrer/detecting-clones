@@ -10,3 +10,5 @@ dataOut <- data.frame(data=c(t(dataIn)))
 View (dataOut)
 dim(dataOut)
 write.csv(dataOut, "reference.csv")
+
+#reference.csv will have numbers in the first column. Delete the first column and save file as .fasta
